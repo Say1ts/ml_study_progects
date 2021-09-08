@@ -1,6 +1,5 @@
 import random as rd
 from operator import attrgetter
-import matplotlib.pyplot as plt
 
 
 # константы генетического алгоритма
@@ -16,7 +15,7 @@ class Individual:
         self.gene = gene
 
     def __repr__(self):
-        return str(self.gene)
+        return str(self.fitness)
 
     def __lt__(self, other):
         return self.fitness < other.fitness
@@ -54,11 +53,11 @@ def clone(value):
 def sel_tournament(population, p_len):
     offspring = []
     for n in range(p_len):
-        i1 = i2 = i3 = 0
-        while i1 == i2 or i1 == i3 or i2 == i3:
-            i1, i2, i3 = rd.randint(0, p_len - 1), rd.randint(0, p_len - 1), rd.randint(0, p_len - 1)
+        i1 = i2 = 0
+        while i1 == i2:
+            i1, i2 = rd.randint(0, p_len - 1), rd.randint(0, p_len - 1)
 
-        offspring.append(max([population[i1], population[i2], population[i3]], key=attrgetter('fitness')))
+        offspring.append(max([population[i1], population[i2]], key=attrgetter('fitness')))
 
     return offspring
 
@@ -109,16 +108,8 @@ while generationCounter < MAX_GENERATIONS:
     meanFitness = sum(fitnessValues) / len(population)
     maxFitnessValues.append(maxFitness)
     meanFitnessValues.append(meanFitness)
-    print(f"Поколение {generationCounter}: Макс приспособ. = {maxFitness}, Средняя приспособ.= {meanFitness}")
+    print(f"Поколение {generationCounter}:  Средняя приспособ.= {meanFitness}")
 
-    best_index = fitnessValues.index(max(fitnessValues))
-    print("Лучший индивидуум = ", population[best_index], "\n")
-
-plt.plot(maxFitnessValues, color='red')
-plt.plot(meanFitnessValues, color='green')
-plt.xlabel('Поколение')
-plt.ylabel('Макс/средняя приспособленность')
-plt.title('Зависимость максимальной и средней приспособленности от поколения')
-plt.show()
 
 print(population)
+print(meanFitnessValues)
