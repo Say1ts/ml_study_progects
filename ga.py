@@ -6,7 +6,7 @@ import matplotlib.pyplot as plt
 # константы генетического алгоритма
 POPULATION_SIZE = 200  # количество индивидуумов в популяции
 P_CROSSOVER = 0.9  # вероятность скрещивания
-P_MUTATION = 0.1  # вероятность мутации индивидуума
+P_MUTATION = 0.15  # вероятность мутации индивидуума
 MAX_GENERATIONS = 50  # максимальное количество поколений
 
 
@@ -63,6 +63,10 @@ def sel_tournament(population, p_len):
     return offspring
 
 
+def mutation(mutant):
+    mutant.fitness += rd.randint(-1, 2)
+
+
 def blx_alpha(cmin, cmax, k=0.2):
     delta_k = int((cmax-cmin) * k)
     start = cmin - delta_k
@@ -88,6 +92,10 @@ while generationCounter < MAX_GENERATIONS:
     for child1, child2 in zip(offspring[::2], offspring[1::2]):
         if rd.random() < P_CROSSOVER:
             crossing(child1, child2)
+
+    for mutant in offspring:
+        if rd.random() < P_MUTATION:
+            mutation(mutant)
 
     freshFitnessValues = list(map(fitness_min, offspring))
     for individual, fitnessValue in zip(offspring, freshFitnessValues):
