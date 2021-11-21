@@ -53,6 +53,7 @@ def clone(value):
 def sel_tournament(population, p_len):
     offspring = []
     for n in range(p_len):
+        # t = 2
         i1 = i2 = 0
         while i1 == i2:
             i1, i2 = rd.randint(0, p_len - 1), rd.randint(0, p_len - 1)
@@ -97,6 +98,7 @@ while generationCounter < MAX_GENERATIONS:
             mutation(mutant)
 
     freshFitnessValues = list(map(fitness_min, offspring))
+    # занесение в поле класса individual значения приспособленности
     for individual, fitnessValue in zip(offspring, freshFitnessValues):
         individual.fitness = fitnessValue
 
